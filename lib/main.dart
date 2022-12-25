@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animations/app_router.dart';
-import 'package:flutter_animations/src/home/home.dart';
 
 void main() {
   runApp(const MyApp());
