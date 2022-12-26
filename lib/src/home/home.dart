@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animations/constants.dart';
+import 'package:flutter_animations/src/core/theme/theme_changer.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 const List<Map<String, String>> animationMapList = [
   {'lable': 'Mouse Courser', 'routeName': mouseCourser},
@@ -15,6 +17,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter Animations'),
+        actions: const [AnimatedThemeChanger()],
+      ),
       body: LayoutBuilder(builder: (context, constraints) {
         return GridView.builder(
           padding: const EdgeInsets.symmetric(
@@ -53,5 +59,35 @@ class HomeScreen extends StatelessWidget {
         );
       }),
     );
+  }
+}
+
+class AnimatedThemeChanger extends StatefulWidget {
+  const AnimatedThemeChanger({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<AnimatedThemeChanger> createState() => _AnimatedThemeChangerState();
+}
+
+class _AnimatedThemeChangerState extends State<AnimatedThemeChanger> {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ThemeChanger>(builder: (context, theme, child) {
+      return IconButton(
+        onPressed: () {
+          context.read<ThemeChanger>().changeTheme();
+        },
+        icon: AnimatedSwitcher(
+          duration: const Duration(seconds: 1),
+          switchInCurve: Curves.easeIn,
+          switchOutCurve: Curves.easeIn.flipped,
+          child: theme.isDarkTheme
+              ? const Icon(Icons.brightness_4)
+              : const Icon(Icons.brightness_2),
+        ),
+      );
+    });
   }
 }
